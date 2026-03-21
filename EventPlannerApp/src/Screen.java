@@ -1,5 +1,7 @@
 package EventPlannerApp;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.RadioButton;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
+
 
 // Makes Screen Pop Up =====================================================
 public class Screen extends Application {
@@ -25,6 +30,7 @@ public class Screen extends Application {
 	
     public static void main(String[] args) {
         launch(args);
+        
     }
     
     
@@ -33,16 +39,41 @@ public class Screen extends Application {
     
     // Code =======================================================================
     
-    Event event1 = new Event("brithday"); // New Event! manually created for now
+    ArrayList<Event> events = new ArrayList<Event>();
     
+    
+    @FXML
+    private VBox eventsBox;
+    
+    @FXML
+    private TextField descriptionTextField;
+   
 	@FXML
 	private TextField nameTextField;
+	
     
 	@FXML
 	void saveButtonPressed(ActionEvent event) {
-    	event1.setName( nameTextField.getText() ); // update event name
-    	    
-        
+		
+		Event newEvent = new Event(nameTextField.getText());
+    	
+    	Button newButton = new Button(nameTextField.getText());
+    	eventsBox.getChildren().add(newButton);
+    	
+    	if(descriptionTextField.getText() != "") {
+    		newEvent.setDescription(descriptionTextField.getText());
+    	}
+    	
+    	events.add(newEvent);
+    	newButton.setOnAction(e -> {
+    		showEvent(newEvent);
+        });
+	}
+	
+	
+	private void showEvent(Event e) {
+		nameTextField.setText(e.getName());
+		descriptionTextField.setText(e.getDescription());
 	}
     
     
