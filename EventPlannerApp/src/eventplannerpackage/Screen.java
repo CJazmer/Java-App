@@ -47,7 +47,16 @@ public class Screen extends Application {
 	@FXML
 	private TextField nameTextField;    
 
+	@FXML
+	private TextField textFieldTotalPeople;  
+	
+	@FXML
+	private TextField textFieldTotalCost;  
+	
+	@FXML
+	private TextArea textAreaOutput; 
     
+	
 	@FXML
 	void saveButtonPressed(ActionEvent event) {
 		
@@ -59,17 +68,33 @@ public class Screen extends Application {
     	if(descriptionTextField.getText() != "") {
     		newEvent.setDescription(descriptionTextField.getText());
     	}
+    	if(textFieldTotalCost.getText() != "") {
+    		newEvent.setTotalCost(Double.parseDouble(textFieldTotalCost.getText()));
+    	}
+    	if(textFieldTotalPeople.getText() != "") {
+    		newEvent.setTotalPeople(Integer.parseInt(textFieldTotalPeople.getText()));
+    	}
     	
     	events.add(newEvent);
     	newButton.setOnAction(e -> {
     		showEvent(newEvent);
         });
+    	
+    	
+    	
 	}
 	
 	
 	private void showEvent(Event e) {
 		nameTextField.setText(e.getName());
-		descriptionTextField.setText(e.getDescription());    
-        
+		descriptionTextField.setText(e.getDescription());
+		textFieldTotalCost.setText(Double.toString(e.getTotalCost()));  
+		textFieldTotalPeople.setText(Integer.toString(e.getTotalPeople()));
+		
+		// Cool text event explainer
+    	textAreaOutput.setText(
+    		"Event: " + e.getName() + 
+    		" will have " + e.getTotalPeople() + " people."
+    	);
 	} 
 }

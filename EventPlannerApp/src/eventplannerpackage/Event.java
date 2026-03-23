@@ -8,7 +8,25 @@ public class Event {
 	String descrition;
 	ArrayList<String> people = new ArrayList<String>();
 	HashMap<String, Integer> expenses = new HashMap<>();
-
+	
+	// simple for now / sum a list later ------
+	Integer totalPeople = 0;
+	Double totalCost = 0.00;
+	public int getTotalPeople() {
+		return totalPeople;
+	}
+	public int getTotalCost() {
+		return totalPeople;
+	}
+	public void setTotalPeople(int people) {
+		totalPeople = people;
+	}
+	public void setTotalCost(double cost) {
+		totalCost = cost;
+	}
+	// ------------------------------------------
+	
+	
 	public Event(String name){
 		this.name = name;
 	}
@@ -69,9 +87,6 @@ public class Event {
 			this.people.remove(i);
 		}
 	}
-	public int getTotalPeople() {
-		return this.people.size();
-	}
 	
 	//Functions specific to Expenses
 	public HashMap<String, Integer> getExpenses() {
@@ -94,6 +109,9 @@ public class Event {
 		}
 		this.expenses.put(newE, c);
 	}
+	
+	// correct way! add back after midterm thing
+	/*
 	public int getTotalCost() {
 		int tot=0;
 		for (int i : expenses.values()) {
@@ -101,4 +119,8 @@ public class Event {
 			}
 		return tot;
 	}
+	public int getTotalPeople() {
+		return this.people.size();
+	}
+	*/
 }
