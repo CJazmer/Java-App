@@ -38,6 +38,10 @@ public class Screen extends Application {
     
     ArrayList<Event> events = new ArrayList<Event>();
     
+    int currEventPos = -1;
+    
+    Button currButton;
+    
     @FXML
     private VBox eventsBox;
 
@@ -55,11 +59,22 @@ public class Screen extends Application {
 	
 	@FXML
 	private TextArea textAreaOutput; 
+	
+	@FXML
+	private Button newEventButton;
+	
+	@FXML
+	private Button deleteEventButton;
+	
+	@FXML
+	private Button saveButton;
     
 	
 	@FXML
 	void saveButtonPressed(ActionEvent event) {
 		
+		
+		if(currEventPos==-1) {
 		Event newEvent = new Event(nameTextField.getText());
     	
     	Button newButton = new Button(nameTextField.getText());
@@ -77,15 +92,72 @@ public class Screen extends Application {
     	
     	events.add(newEvent);
     	newButton.setOnAction(e -> {
+    		if(currButton!=null) {
+    			currButton.setUnderline(false);
+    		}
+    		
+    		newButton.setUnderline(true);
+    		saveButton.setText("Save Changes");
+    		newEventButton.setVisible(true);
+    		deleteEventButton.setVisible(true);
+    		currButton = newButton;
+    		//nameTextField.setEditable(false);
     		showEvent(newEvent);
         });
-    	
+		}else {
+			if(nameTextField.getText() != "") {
+	    		events.get(currEventPos).setName(nameTextField.getText());
+	    		currButton.setText(nameTextField.getText());
+	    	}
+			if(descriptionTextField.getText() != "") {
+	    		events.get(currEventPos).setDescription(descriptionTextField.getText());
+	    	}
+	    	if(textFieldTotalCost.getText() != "") {
+	    		events.get(currEventPos).setTotalCost(Double.parseDouble(textFieldTotalCost.getText()));
+	    	}
+	    	if(textFieldTotalPeople.getText() != "") {
+	    		events.get(currEventPos).setTotalPeople(Integer.parseInt(textFieldTotalPeople.getText()));
+	    	}
+		}
     	
     	
 	}
 	
+	@FXML
+	void newEventButtonPressed(ActionEvent event) {
+		currButton.setUnderline(false);
+		saveButton.setText("Save Event");
+		newEventButton.setVisible(false);
+		deleteEventButton.setVisible(false);
+		currEventPos = -1;
+		//nameTextField.setEditable(true);
+		nameTextField.setText("");
+		descriptionTextField.setText("");
+		textFieldTotalCost.setText("");
+		textFieldTotalPeople.setText("");
+	}
+	
+	@FXML
+	void deleteEventButtonPressed(ActionEvent event) {
+		events.remove(currEventPos);
+		eventsBox.getChildren().remove(currButton);
+		
+		saveButton.setText("Save Event");
+		newEventButton.setVisible(false);
+		deleteEventButton.setVisible(false);
+		currEventPos = -1;
+		//nameTextField.setEditable(true);
+		nameTextField.setText("");
+		descriptionTextField.setText("");
+		textFieldTotalCost.setText("");
+		textFieldTotalPeople.setText("");
+	}
+	
 	
 	private void showEvent(Event e) {
+		currEventPos = findEvent(e);
+		System.out.print(currEventPos);
+		
 		nameTextField.setText(e.getName());
 		descriptionTextField.setText(e.getDescription());
 		textFieldTotalCost.setText(Double.toString(e.getTotalCost()));  
@@ -97,4 +169,14 @@ public class Screen extends Application {
     		" will have " + e.getTotalPeople() + " people."
     	);
 	} 
+	
+	private int findEvent(Event e) {
+		int pos = -1;
+		for (int i = 0; i < events.size(); i++) {
+			if (events.get(i) == e) {
+				pos = i;
+			}
+		}
+		return pos;
+	}
 }
